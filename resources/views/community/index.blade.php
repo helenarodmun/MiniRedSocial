@@ -3,5 +3,3 @@
 @section('content')
 @include('layouts.add-link')
 @stop
-
-hfhgfdhrfgd
