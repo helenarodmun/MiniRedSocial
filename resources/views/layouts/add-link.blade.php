@@ -5,6 +5,17 @@
     <div class="row">
         <div class="col-md-8">
             <h1>Community</h1>
+             @foreach ($links as $link)
+            <li>
+                <a href="{{$link->link}}" target="_blank">
+                    {{$link->title}}
+                </a>
+                <small>Contributed by: {{$link->creator->name}} {{$link->updated_at->diffForHumans()}}</small>
+                <span class="label label-default" style="background: {{ $link->channel->color }}">
+                    {{ $link->channel->title }}
+                    </span>
+            </li>
+            @endforeach
             @foreach ($links as $link)
             <li>
                 <a href="{{$link->link}}" target="_blank">
@@ -37,7 +48,7 @@
         
                         <div class="form-group">
                             <label for="link">Link:</label>
-                            <input type="text" class="form-control @error ('link') is-invalid @enderror" id="link" name="link" placeholder="What is the URL?" value="{{old('link')}}>
+                            <input type="text" class="form-control @error ('link') is-invalid @enderror" id="link" name="link" placeholder="What is the URL?" value={{old('link')}}>
                             @error('title')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

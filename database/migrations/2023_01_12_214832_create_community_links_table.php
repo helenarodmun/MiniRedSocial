@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('community_links', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->index();
-            $table->integer('Channel_id')->index();
+            $table->integer('channel_id')->index();
             $table->string('title');
             $table->string('link')->unique();
             $table->boolean('approved')->default(0);

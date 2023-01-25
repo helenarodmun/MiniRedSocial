@@ -24,6 +24,6 @@ class CommunityLink extends Model
 
     public function channel()
     {
-        return $this->belongsTo(Channel::class, 'channel_id');
+        return $this->belongsTo(Channel::class);
     }
 }
