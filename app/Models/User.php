@@ -41,4 +41,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Devuelve con el método de User el atributo 'trusted'
+    public function isTrusted()
+    {
+        return $this->trusted ? true : false;
+    }
 }

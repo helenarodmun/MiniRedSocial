@@ -16,8 +16,14 @@ class CommunityLinkController extends Controller
      */
     public function index()
     {
-        $links = CommunityLink::paginate(25);
-        $channels = Channel::orderBy('title','asc')->get();
+        /**
+         * $links ->filtramos la consulta, para mostrar solo los links aprovados,
+         * con paginación de 25
+         * $channels -> mostrremos los canales  por orden ascendente
+         * A la vista le pasamos los atributos, y las variables  a mostrar
+         */
+        $links = CommunityLink::where('approved', 1)->paginate(25);
+        $channels = Channel::orderBy('title', 'asc')->get();
         return view('community/index', compact('links', 'channels'));
     }
 
@@ -43,11 +49,18 @@ class CommunityLinkController extends Controller
             'title' => 'required',
             'link' => 'required|active_url|unique:community_links',
             'channel_id' => 'required|exists:channels,id'
-          ]);
-        request()->merge(['user_id' => Auth::id(), 'channel_id' => 1 ]);
-        CommunityLink::create($request->all());       
-        return back();
+        ]);
+        //Devuelve con el método de User el atributo 'trusted'
+        $approved = Auth::user()->isTrusted();
+        request()->merge(['user_id' => Auth::id(), 'approved' => $approved, 'channel_id' => 1]);
+        CommunityLink::create($request->all());
+        if ($approved == true) {
+            return back()->with('success', 'Link created successfully!');
+        } else {
+            return back()->with('error', 'You are not a verified user, when we approve three links you will be able to publish freely!');
+        }
     }
+
 
     /**
      * Display the specified resource.
