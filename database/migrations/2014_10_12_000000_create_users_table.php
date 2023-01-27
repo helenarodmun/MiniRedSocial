@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('trusted')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
-        $table->dropColumn('trusted');
+        
     }
 };

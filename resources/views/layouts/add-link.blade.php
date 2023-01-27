@@ -1,7 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
-    <div class="container">
+    <div id="community" class="container">
         <div class="row">
             <div class="col-md-8">
                 <div id="app">
@@ -11,23 +10,23 @@
                 <h1 class="m-5">Community</h1>
                 <hr>
                 @if (count($links) <= 0)
+                
                     <h5 class="m-2">No contributions yet</h5>
                 @else
-                    @foreach ($links as $link)
-                        <li>
-                            <a href="{{ $link->link }}" target="_blank">
-                                {{ $link->title }}
-                            </a>
-                            <small>Contributed by: {{ $link->creator->name }}
-                                {{ $link->updated_at->diffForHumans() }}</small>
-                            <span class="label label-default" style="background: {{ $link->channel->color }}">
-                                {{ $link->channel->title }}
-                            </span>
-                        </li>
-                    @endforeach
+                @foreach ($links as $link)
+                <li>                    
+                    <span id="labelChannel" class="label label-default" style="background: {{ $link->channel->color }}">
+                        {{ $link->channel->title }}
+                        </span>
+                    <a href="{{$link->link}}" target="_blank">
+                        {{$link->title}}
+                    </a>
+                    <small>Contributed by: {{$link->creator->name}} {{$link->updated_at->diffForHumans()}}</small>
+                </li>
+                @endforeach
                 @endif
             </div>
-            <div class="col-md-4">
+            <div id="cardForm"class="col-md-4">
                 <div class="card">
                     <div class="card-header">
                         <h3>Contribute a link</h3>

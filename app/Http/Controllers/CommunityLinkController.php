@@ -52,7 +52,7 @@ class CommunityLinkController extends Controller
         ]);
         //Devuelve con el método de User el atributo 'trusted'
         $approved = Auth::user()->isTrusted();
-        request()->merge(['user_id' => Auth::id(), 'approved' => $approved, 'channel_id' => 1]);
+        request()->merge(['user_id' => Auth::id(), 'approved' => $approved, 'channel_id']);
         CommunityLink::create($request->all());
         if ($approved == true) {
             return back()->with('success', 'Link created successfully!');
