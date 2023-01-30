@@ -15,7 +15,7 @@ class CommunityLinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $slug = null)
     {
         /**
          * $links ->filtramos la consulta, para mostrar solo los links aprovados,
@@ -25,6 +25,7 @@ class CommunityLinkController extends Controller
          */
         $links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(25);
         $channels = Channel::orderBy('title', 'asc')->get();
+        $slugs = Channel::where('slug',$slug)->first();
         return view('community/index', compact('links', 'channels'));
     }
 
@@ -48,11 +49,15 @@ class CommunityLinkController extends Controller
      */
     public function store(CommunityLinkForm $request)
     {     
+
+        $link = new CommunityLink();
+        $link->user_id = Auth::id();
+
         //Devuelve con el método de User el atributo 'trusted'
         $approved = Auth::user()->isTrusted();
         $request->merge(['user_id' => Auth::id(), 'approved' => $approved ]);
         
-        if (CommunityLink::hasAlreadyBeenSubmitted($request->link)) {
+        if ($link->hasAlreadyBeenSubmitted($request->link)) {
             return back()->with('warning', 'This link has already been submitted!');
         }else{  
             CommunityLink::create($request->all());         
