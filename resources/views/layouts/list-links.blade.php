@@ -5,14 +5,19 @@
                 @include('flash-message')
                 @yield('content')
             </div>
-            <h1 class="m-5">Community</h1>
+            <h1><a href="/community">Community -
+                {{-- verifica si la variable "$slug" existe --}}
+                @if (isset($slug))
+                    <span>{{$slug}}</span>       
+                @endif
+            </a></h1>
             <hr>
             @if (count($links) <= 0)
-            
+
                 <h5 class="m-2">No contributions yet</h5>
             @else
             @foreach ($links as $link)
-            <li>                    
+            <li>
                 <span id="labelChannel" class="label label-default" style="background: {{ $link->channel->color }}">
                     {{ $link->channel->title, $link->channel->slug }}
                     </span>
@@ -24,4 +29,3 @@
             @endforeach
             @endif
         </div>
-    

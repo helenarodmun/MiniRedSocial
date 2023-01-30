@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 class CommunityLink extends Model
@@ -30,7 +31,7 @@ class CommunityLink extends Model
     
     //método comprueba si un enlace en particular ya ha sido enviado anteriormente.
     // Si es así, actualiza el marcador de tiempo de la entrada en la base de datos y devuelve 'true'. Si no, devuelve 'false'
-    protected function hasAlreadyBeenSubmitted($link)
+    public function hasAlreadyBeenSubmitted($link)
     {
         if ($existing = static::where('link', $link)->first()) {
             $existing->touch();
