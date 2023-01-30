@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-    @include('layouts.add-link')
+    @include('layouts.add-link')   
 @stop

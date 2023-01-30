@@ -29,8 +29,7 @@ class CommunityLinkForm extends FormRequest
         return [
             'title' => 'required',
             'link' => 'required|active_url',
-            'channel_id' => 'required|exists:channels,id',
-            'user_id' => 'required|exists:users,id'
+            'channel_id' => 'required|exists:channels,id'
         ];
     }
 }

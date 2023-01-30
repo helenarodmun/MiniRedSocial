@@ -48,19 +48,17 @@ class CommunityLinkController extends Controller
      */
     public function store(CommunityLinkForm $request)
     {     
-        $validated = $request->validated(); 
-        $validated =$request->safe()->only(['title', 'link', 'channel_id', 'user_id']);
-        $validated =$request->safe()->except(['title', 'link', 'channel_id', 'user_id']); 
         //Devuelve con el método de User el atributo 'trusted'
         $approved = Auth::user()->isTrusted();
-        $request->merge(['user_id' => Auth::id(), 'approved' => $approved, 'channel_id']);
-        CommunityLink::create($validated);
+        $request->merge(['user_id' => Auth::id(), 'approved' => $approved ]);
+        
         if (CommunityLink::hasAlreadyBeenSubmitted($request->link)) {
-            return back()->with('error', 'This link has already been submitted!');
-        }else{           
-            if ($approved == true) {
+            return back()->with('warning', 'This link has already been submitted!');
+        }else{  
+            CommunityLink::create($request->all());         
+            if ($approved == true) {               
                 return back()->with('success', 'Link created successfully!');
-            } else {
+            } else {                
                 return back()->with('error', 'You are not a verified user, when we approve three links you will be able to publish freely!');
             }
         }   
