@@ -7,7 +7,8 @@
             </div>
             <h1><a href="/community">Community</a>
                 {{-- verifica si la variable "$slug" es distinta a null --}}                
-                @if ($slug == null )
+                @if (empty($slug))
+                
                     <span> - ALL</span>                
                  @else
                     <span> - {{$slug}}</span>   

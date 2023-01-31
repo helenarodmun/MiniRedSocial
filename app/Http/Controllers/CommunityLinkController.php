@@ -29,14 +29,17 @@ class CommunityLinkController extends Controller
             //filtra los links asociados a ese canal en la tabla CommunityLink y solo muestra aquellos 
             //links aprobados que están ordenados por la fecha de actualización de manera descendente, y luego se paginan con 25 por página
             $links = CommunityLink::where('channel_id', $channel->id)->where('approved', 1)->latest('updated_at')->paginate(25);
+              //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
+            $slug = $channel->slug;
         } else {
             //muestra todos los links
-            $links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(25);        }
-        
+            $links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(25);
+            $slug = '';
+        }
+
         //obtiene todos los canales  ordenados por título
-        $channels = Channel::orderBy('title', 'asc')->get();
-        //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
-        $slug = $channel->slug !== null ? $channel->slug : '';
+        $channels = Channel::orderBy('title', 'asc')->get();      
+        
         //devuelve la vista con los links y canales  y el valor de $slug
         return view('community/index', compact('links', 'channels', 'slug'));
     }
@@ -60,32 +63,32 @@ class CommunityLinkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(CommunityLinkForm $request)
-    {     
-       
+    {
+
 
         //Devuelve con el método de User el atributo 'trusted'
         $approved = Auth::user()->isTrusted();
-            
+
         //Establece el atributo 'approved' con el resultado de isTrusted()
-        $request->merge(['user_id' => Auth::id(), 'approved' => $approved ]);
+        $request->merge(['user_id' => Auth::id(), 'approved' => $approved]);
         //Verifica si el link ha sido previamente enviado
-         //Crea una nueva instancia de CommunityLink
-         $link = new CommunityLink();
-         //Establece el atributo user_id con el id del usuario autenticado
-         $link->user_id = Auth::id(); 
+        //Crea una nueva instancia de CommunityLink
+        $link = new CommunityLink();
+        //Establece el atributo user_id con el id del usuario autenticado
+        $link->user_id = Auth::id();
         if ($link->hasAlreadyBeenSubmitted($request->link)) {
             //Si se ha enviado previamente, devuelve un mensaje
             return back()->with('info', 'This link has already been submitted!');
-        }else{  
+        } else {
             //Crea el link            
-            CommunityLink::create($request->all());  
-                
-            if ($approved == true) {               
+            CommunityLink::create($request->all());
+
+            if ($approved == true) {
                 return back()->with('success', 'Link created successfully!');
-            } else {                
+            } else {
                 return back()->with('error', 'You are not a verified user, when we approve three links you will be able to publish freely!');
             }
-        }   
+        }
     }
 
 
