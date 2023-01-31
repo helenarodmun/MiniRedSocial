@@ -36,9 +36,9 @@ class CommunityLinkController extends Controller
         //obtiene todos los canales  ordenados por título
         $channels = Channel::orderBy('title', 'asc')->get();
         //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
-        $slug = $channel->slug;
+        $slug = $channel->slug !== null ? $channel->slug : '';
         //devuelve la vista con los links y canales  y el valor de $slug
-        return view('community/index', compact('links', 'channels','slug'));
+        return view('community/index', compact('links', 'channels', 'slug'));
     }
 
     /**

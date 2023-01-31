@@ -5,12 +5,14 @@
                 @include('flash-message')
                 @yield('content')
             </div>
-            <h1><a href="/community">Community -
-                {{-- verifica si la variable "$slug" existe --}}
-                @if (isset($slug))
-                    <span>{{$slug}}</span>       
+            <h1><a href="/community">Community</a>
+                {{-- verifica si la variable "$slug" es distinta a null --}}                
+                @if ($slug == null )
+                    <span> - ALL</span>                
+                 @else
+                    <span> - {{$slug}}</span>   
                 @endif
-            </a></h1>
+            </h1>
             <hr>
             @if (count($links) <= 0)
 
