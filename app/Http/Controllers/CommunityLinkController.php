@@ -28,8 +28,8 @@ class CommunityLinkController extends Controller
         if ($channel) {
             //filtra los links asociados a ese canal en la tabla CommunityLink y solo muestra aquellos 
             //links aprobados que están ordenados por la fecha de actualización de manera descendente, y luego se paginan con 25 por página
-            $links = CommunityLink::where('channel_id', $channel->id)->where('approved', 1)->latest('updated_at')->paginate(25);
-              //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
+            $links = $channel->communitylinks()->where('approved', 1)->latest('updated_at')->paginate(25);
+            //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
             $slug = $channel->slug;
         } else {
             //muestra todos los links
