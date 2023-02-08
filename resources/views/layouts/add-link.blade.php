@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.list-links')
+    @auth
     <div id="cardForm"class="col-md-4">
         <div class="card">
             <div class="card-header">
@@ -50,6 +51,7 @@
             </div>
         </div>
     </div>
+    @endauth
     </div>
     {{ $links->links() }}
     </div>
