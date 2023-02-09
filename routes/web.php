@@ -29,14 +29,15 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::post('community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
-    
 });
 
-Route::middleware('auth')->group(function() {
-    Route::post('votes/{link}', [App\Http\Controllers\CommunityLinkController::class, 'store']);
-});
-
-Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkUserController::class, 'index']);   
+Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 
 
-require __DIR__.'/auth.php';
+Route::post('community/votes/{link}', [App\Http\Controllers\CommunityLinkUserController::class, 'store']);
+
+
+
+
+
+require __DIR__ . '/auth.php';
