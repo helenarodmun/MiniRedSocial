@@ -8,7 +8,6 @@ use App\Models\User;
 
 class CommunityLinkUser extends Model
 {
-    protected $table = 'community_link_users';
     use HasFactory;
 
     protected $fillable = [

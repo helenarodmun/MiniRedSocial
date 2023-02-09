@@ -29,8 +29,14 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::post('community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
+    
 });
-Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkController::class, 'index']);   
+
+Route::middleware('auth')->group(function() {
+    Route::post('votes/{link}', [App\Http\Controllers\CommunityLinkController::class, 'store']);
+});
+
+Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkUserController::class, 'index']);   
 
 
 require __DIR__.'/auth.php';

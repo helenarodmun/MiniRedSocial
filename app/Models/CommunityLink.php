@@ -30,7 +30,7 @@ class CommunityLink extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class, 'community_link_users');
+        return $this->belongsToMany(User::class);
     }
     
     
