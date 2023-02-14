@@ -38,8 +38,8 @@ class CommunityLinkController extends Controller
         }
 
         //obtiene todos los canales  ordenados por título
-        $channels = Channel::orderBy('title', 'asc')->get();      
-        
+        $channels = Channel::orderBy('title', 'asc')->get();
+
         //devuelve la vista con los links y canales  y el valor de $slug
         return view('community/index', compact('links', 'channels', 'slug'));
     }
@@ -64,22 +64,24 @@ class CommunityLinkController extends Controller
      */
     public function store(CommunityLinkForm $request)
     {
-
-
         //Devuelve con el método de User el atributo 'trusted'
         $approved = Auth::user()->isTrusted();
 
         //Establece el atributo 'approved' con el resultado de isTrusted()
         $request->merge(['user_id' => Auth::id(), 'approved' => $approved]);
+
         //Verifica si el link ha sido previamente enviado
         //Crea una nueva instancia de CommunityLink
         $link = new CommunityLink();
+
         //Establece el atributo user_id con el id del usuario autenticado
         $link->user_id = Auth::id();
+
         if ($link->hasAlreadyBeenSubmitted($request->link)) {
             //Si se ha enviado previamente, devuelve un mensaje
             return back()->with('info', 'This link has already been submitted!');
         } else {
+
             //Crea el link            
             CommunityLink::create($request->all());
 

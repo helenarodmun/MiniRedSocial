@@ -37,7 +37,4 @@ Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkCo
 Route::post('community/votes/{link}', [App\Http\Controllers\CommunityLinkUserController::class, 'store']);
 
 
-
-
-
 require __DIR__ . '/auth.php';

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('community_link_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->index();
-            $table->integer('community_link_id')->index();
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
+            $table->foreignId('community_link_id')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }

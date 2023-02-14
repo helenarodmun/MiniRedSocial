@@ -12,7 +12,6 @@ class CommunityLinkUserController extends Controller
 
     public function store(CommunityLink $link)
     {
-        dd($link);
         // Se guarda en la variable el usuario autenticado a través de la id búscandolo
         // con el método firstOrNew que encuentra el primer registro de la tabla pivote que coincida con las restricciones dadas,
         // y si no crea uno nuevo, en este caso buscara el usuario que está logueado, si tiene el id del link que se la pasa a través del action del formulario por url
@@ -28,3 +27,5 @@ class CommunityLinkUserController extends Controller
         return back();
     }
 }
+
+//OJO!! si da errores limpiar la cache de rutas y config php artisan config:clear
