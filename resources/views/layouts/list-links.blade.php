@@ -33,10 +33,15 @@
                     <small>⭐Votes:</small>
                     <form method="POST" action="community/votes/{{ $link->id }}">
                         {{ csrf_field() }}
-                        <button class="btn {{ Auth::check() && Auth::user()->votedFor($link) ? 'btn-success' : 'btn-secondary' }}" {{ Auth::guest() ? 'disabled' : '' }}  >
-                        {{$link->users()->count()}}
+                        <button
+                            class="btn {{ Auth::check() && Auth::user()->votedFor($link) ? 'btn-success' : 'btn-secondary' }}"
+                            {{ Auth::guest() ? 'disabled' : '' }}>
+                            {{ $link->users()->count() }}
                         </button>
                     </form>
                 @endforeach
             @endif
+            {{ $links->appends($_GET)->links() }}
+            {{-- La función appends se encarga de mantener los filtros seleccionados al navegar por las diferentes páginas del sistema de paginación de Laravel.
+                cuando haga clic en un enlace de paginación, se mantendrá el filtro de popularidad en la URL y se mostrará la siguiente página de resultados ordenados por popularidad. --}}
         </div>

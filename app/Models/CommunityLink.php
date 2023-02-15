@@ -17,7 +17,7 @@ class CommunityLink extends Model
         'title',
         'link',
         'approved'
-      ];
+    ];
 
     public function creator()
     {
@@ -32,8 +32,8 @@ class CommunityLink extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    
-    
+
+
     //método comprueba si un enlace en particular ya ha sido enviado anteriormente.
     // Si es así, actualiza el marcador de tiempo de la entrada en la base de datos y devuelve 'true'. Si no, devuelve 'false'
     public function hasAlreadyBeenSubmitted($link)

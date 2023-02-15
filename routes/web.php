@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::post('community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
 });
 
-Route::get('community/{channel?}/{slug?}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
+Route::get('community/{channel?}/{slug?}/{popular?}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 
 
 Route::post('community/votes/{link}', [App\Http\Controllers\CommunityLinkUserController::class, 'store']);

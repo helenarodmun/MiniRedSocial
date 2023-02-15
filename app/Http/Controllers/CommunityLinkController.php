@@ -16,33 +16,37 @@ class CommunityLinkController extends Controller
      * @return \Illuminate\Http\Response
      */
     // recibe un parámetro opcional Channel $channel = null
+
     public function index(Channel $channel = null)
     {
-        /**
-         * $links ->filtramos la consulta, para mostrar solo los links aprovados,
-         * con paginación de 25, y que aparezcan los últimos registros creados
-         * $channels -> mostrremos los canales  por orden ascendente
-         * A la vista le pasamos los atributos, y las variables  a mostrar
-         */
-        //Si se ha pasado el slug del canal por la URL
+        //$links ->filtramos la consulta, para mostrar solo los links aprovados
+        $links = CommunityLink::where('approved', 1);
+        //para comprobar si el parámetro 'popular' está presente en la URL. Este método
+        //devuelve truesi la variable 'popular' está presente en la URL y false en caso contrario.
+        if (request()->exists('popular')) {
+            //withCount (Cuenta con relación)
+            //ayuda a obtener la cantidad de registros relacionados dentro del objeto principal   
+            $links->withCount('votes')->orderBy('votes_count', 'desc');
+        } else {
+            $links->latest('updated_at');
+        }
+
         if ($channel) {
-            //filtra los links asociados a ese canal en la tabla CommunityLink y solo muestra aquellos 
-            //links aprobados que están ordenados por la fecha de actualización de manera descendente, y luego se paginan con 25 por página
-            $links = $channel->communitylinks()->where('approved', 1)->latest('updated_at')->paginate(25);
+            $links = $links->where('channel_id', $channel->id);
             //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
             $slug = $channel->slug;
         } else {
-            //muestra todos los links
-            $links = CommunityLink::where('approved', 1)->latest('updated_at')->paginate(25);
             $slug = '';
         }
 
+        $links = $links->paginate(25);
         //obtiene todos los canales  ordenados por título
         $channels = Channel::orderBy('title', 'asc')->get();
-
         //devuelve la vista con los links y canales  y el valor de $slug
         return view('community/index', compact('links', 'channels', 'slug'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
