@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 
 
@@ -23,7 +24,10 @@ class CommunityLink extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function channel()
     {
         return $this->belongsTo(Channel::class);
@@ -33,7 +37,10 @@ class CommunityLink extends Model
         return $this->belongsToMany(User::class);
     }
 
-
+    public function votes()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
     //método comprueba si un enlace en particular ya ha sido enviado anteriormente.
     // Si es así, actualiza el marcador de tiempo de la entrada en la base de datos y devuelve 'true'. Si no, devuelve 'false'
     public function hasAlreadyBeenSubmitted($link)

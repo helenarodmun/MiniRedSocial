@@ -44,4 +44,14 @@
             {{ $links->appends($_GET)->links() }}
             {{-- La función appends se encarga de mantener los filtros seleccionados al navegar por las diferentes páginas del sistema de paginación de Laravel.
                 cuando haga clic en un enlace de paginación, se mantendrá el filtro de popularidad en la URL y se mostrará la siguiente página de resultados ordenados por popularidad. --}}
-        </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        {{--La clase "disabled" se agrega si no se ha seleccionado "popular". El atributo "href" utiliza la URL actual--}}
+                    <a class="nav-link {{request()->exists('popular') ? '' : 'disabled' }}" href="{{request()->url()}}">Most recent</a>
+                    </li>
+                    <li class="nav-item">
+                        {{-- La clase "disabled" se agrega si se ha seleccionado "popular". El atributo "href" agrega "?popular" a la URL actual--}}
+                    <a class="nav-link {{request()->exists('popular') ? 'disabled' : '' }}" href="?popular">Most popular</a>
+                    </li>
+                    </ul>
+            </div>

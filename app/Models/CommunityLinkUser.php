@@ -17,6 +17,11 @@ class CommunityLinkUser extends Model
     //forzado del nombre de la tabla por conflicto con las consultas sql -> Illuminate \ Database \ QueryException (42S02) SQLSTATE[42S02]: Base table or view not found: 1146 Table
     protected $table = 'community_link_user';
 
+    public function votes()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+    
     public function toggleVote(CommunityLink $link)
     {
         $vote = $this->firstOrNew(['user_id' => Auth::id(), 'community_link_id' => $link->id]);

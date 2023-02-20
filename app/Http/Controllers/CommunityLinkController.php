@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Channel;
 use App\Http\Requests\CommunityLinkForm;
+use App\Queries\CommunityLinksQuery;
 
 class CommunityLinkController extends Controller
 {
@@ -16,38 +17,35 @@ class CommunityLinkController extends Controller
      * @return \Illuminate\Http\Response
      */
     // recibe un parámetro opcional Channel $channel = null
-
     public function index(Channel $channel = null)
     {
-        //$links ->filtramos la consulta, para mostrar solo los links aprovados
-        $links = CommunityLink::where('approved', 1);
-        //para comprobar si el parámetro 'popular' está presente en la URL. Este método
-        //devuelve truesi la variable 'popular' está presente en la URL y false en caso contrario.
-        if (request()->exists('popular')) {
-            //withCount (Cuenta con relación)
-            //ayuda a obtener la cantidad de registros relacionados dentro del objeto principal   
-            $links->withCount('votes')->orderBy('votes_count', 'desc');
-        } else {
-            $links->latest('updated_at');
-        }
+        // Se crea una instancia de CommunityLinksQuery
+        $linksQuery = new CommunityLinksQuery();
+        $slug = '';
 
+        // Si se pasa un objeto Channel, se obtienen los enlaces de la comunidad asociados a ese canal
+        // y se guarda el valor del slug en la variable $slug
         if ($channel) {
-            $links = $links->where('channel_id', $channel->id);
-            //asigna el valor de $slug a $channel->slug, que representa el slug del canal seleccionado
+            $links = $linksQuery->getByChannel($channel);
             $slug = $channel->slug;
-        } else {
-            $slug = '';
+        }
+        // Si no se pasa un objeto Channel, se obtienen todos los enlaces de la comunidad
+        else {
+            $links = $linksQuery->getAll();
         }
 
-        $links = $links->paginate(25);
-        //obtiene todos los canales  ordenados por título
+        // Si existe el parámetro "popular" en la solicitud, se obtienen los enlaces más populares
+        // y se pasan a la variable $links
+        if (request()->exists('popular')) {
+            $links = $linksQuery->getMostPopular($channel);
+        }
+
+        // Se obtienen todos los canales ordenados por título de forma ascendente
         $channels = Channel::orderBy('title', 'asc')->get();
-        //devuelve la vista con los links y canales  y el valor de $slug
+
+        // Se devuelve la vista community/index con los enlaces, los canales y el slug como variables
         return view('community/index', compact('links', 'channels', 'slug'));
     }
-
-
-
     /**
      * Show the form for creating a new resource.
      *
