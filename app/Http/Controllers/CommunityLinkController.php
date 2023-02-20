@@ -22,7 +22,7 @@ class CommunityLinkController extends Controller
         // Se crea una instancia de CommunityLinksQuery
         $linksQuery = new CommunityLinksQuery();
         $slug = '';
-
+    
         // Si se pasa un objeto Channel, se obtienen los enlaces de la comunidad asociados a ese canal
         // y se guarda el valor del slug en la variable $slug
         if ($channel) {
@@ -33,19 +33,32 @@ class CommunityLinkController extends Controller
         else {
             $links = $linksQuery->getAll();
         }
-
+    
         // Si existe el parámetro "popular" en la solicitud, se obtienen los enlaces más populares
         // y se pasan a la variable $links
         if (request()->exists('popular')) {
             $links = $linksQuery->getMostPopular($channel);
         }
-
+        // comprueba si el parámetro "search" está presente en la solicitud HTTP actual mediante el método hasde la clase Request.
+        // Si el parámetro "buscar" está presente, el método searchde la clase CommunityLinksQueryse llama con el valor del parámetro "buscar" como argumento.        
+        // El método trimse aplica al valor del parámetro "search" para eliminar cualquier espacio en blanco necesario.
+        if (request()->has('search')) {
+            $links = $linksQuery->search(trim(request()->get('search')));
+            // Si existe el parámetro "popular" en la solicitud, se obtienen los enlaces más populares
+            // y se pasan a la variable $links
+            if (request()->exists('popular')) {
+                $links = $linksQuery->getMostPopular($channel);
+            }
+        }
+    
         // Se obtienen todos los canales ordenados por título de forma ascendente
         $channels = Channel::orderBy('title', 'asc')->get();
-
+    
         // Se devuelve la vista community/index con los enlaces, los canales y el slug como variables
         return view('community/index', compact('links', 'channels', 'slug'));
     }
+    
+
     /**
      * Show the form for creating a new resource.
      *

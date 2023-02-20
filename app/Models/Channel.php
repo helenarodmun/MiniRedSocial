@@ -14,12 +14,12 @@ class Channel extends Model
         'slug',
         'color',
     ];
-
+    // El nombre del parámetro de ruta a usar para buscar el modelo.
     public function getRouteKeyName()
     {
         return 'slug';
     }
-
+    // Definición de la relación de uno a muchos con la clase CommunityLink
     public function communitylinks()
     {
         return $this->hasMany(CommunityLink::class);

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\CommunityLink;
 
 //como podemos comprobar en la declaración de la clase, la clase hereda de FormRequest
 //que son clases de ayuda que permiten validar y autorizar los datos de un formulario enviados por el usuario
